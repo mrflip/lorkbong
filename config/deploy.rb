@@ -34,11 +34,12 @@ namespace :deploy do
   end
 
   task :after_symlink do
+    sudo "chown -R #{web_user} #{deploy_to}/shared/log #{deploy_to}/shared/tmp #{deploy_to}/shared/system"
     run "ln -nfs #{deploy_to}/shared/system/settings.yml #{deploy_to}/current/config/settings.yml"
   end
 
   task :after_setup do
-    run "sudo gem install rack rack-test sinatra haml extlib monk-glue json unicorn god godhead"
+    run "sudo gem install dependencies rack rack-test rack-flash sinatra haml extlib oauth rest-client monk-glue json unicorn god godhead"
   end
 
   # This will make sure that Capistrano doesn't try to run rake:migrate (this is not a Rails project!)

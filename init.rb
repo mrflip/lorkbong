@@ -1,5 +1,4 @@
 ::ROOT_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? ::ROOT_DIR
-# require "rubygems"
 
 begin
   require "vendor/dependencies/lib/dependencies"
@@ -10,12 +9,24 @@ require "monk/glue"
 require "json"
 require 'sinatra'
 require 'haml'
+require 'extlib'
+
+# Load initializers
+Dir[Monk::Glue.root_path("config/initializers/*.rb")].each{|file| require file.gsub(/\.rb$/, '\1') }
 # require 'dm-core'
 # require 'dm-validations'
 # require 'dm-timestamps'
 
 class Main < Monk::Glue
   set :app_file, __FILE__
+  configure :production do
+    set :static,           false
+  end
+  configure :development, :test do
+    set :static,           true
+    set :clean_trace,      true
+  end
+  set :logging,          false
   use Rack::Session::Cookie,
     :key          => 'rack.session',
     :domain       => settings(:domain),
@@ -27,6 +38,10 @@ end
 # Load all application files.
 Dir[Monk::Glue.root_path("app/**/*.rb")].each do |file|
   require file
+end
+
+# Shim in any rack Middleware
+Main.class_eval do
 end
 
 # # Connect to database.
