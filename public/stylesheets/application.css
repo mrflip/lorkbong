@@ -1,0 +1,111 @@
+/* ===========================================================================
+   Overall geometry
+ */
+
+#container {
+  font-size:            110%;
+  max-width:            950px;
+  margin:               0 auto;
+}
+#header, #footer {
+   clear: both; float: left
+}
+#header {
+   background-color:  #eceff6;
+   color:             #333333;
+   border:            1px solid #d4dae8;
+   font-size:         13px;
+   font-weight:       bold;
+   margin:            0.5em auto 1.5em auto ;
+   padding:           0 6px;
+   width:             948px ;
+}
+#header a {
+   overflow:          hidden;
+   width:             150px;
+   padding:           26px 0 18px 4px ;
+   display:           inline-block;
+   min-height:        24px;
+}
+
+/* ===========================================================================
+   Styles
+*/
+
+.subscriptions { font-size: 14px; }
+.show          { margin: 2em 0; }
+caption        { font-weight: bold ; font-size: 1.125em }
+.attr          {  width: 200px; min-width: 200px; }
+.val           {  background-color:     #f8f8f8; }
+
+/*
+  Forms
+*/
+
+dl             { float: left; display: block;        }
+dd, dt         { float: left; display: inline-block; }
+li, dt, dd     {
+   font-size:           14px;
+   line-height:         1.75;
+   margin-top:          2px;
+}
+dt, .label     {
+   list-style:          none;
+   padding-left:        24px;
+   background-repeat:   no-repeat;
+   background-position: 0px 4px;
+   clear:               left;
+   width:               170px;
+   min-height:          24px;
+}
+dd input[type="text"], dd textarea { width: 400px; padding: 2px; border: 1px dotted gray; }
+dd .inputbox                       { width: 406px; display: inline-block }
+.help                              { width: 730px;  }
+.help.inline                       { width: 330px; display: inline-block }
+option                             { min-width: 200px; }
+select                             { padding-right: 10px;  }
+dd input[type="text"], dd textarea, option, select
+                                   { font-size:   14px; line-height: 1.5; }
+.help, .help li                    { font-size:  11px; color: #666;     }
+
+/*
+  Utility classes
+*/
+
+.quiet            { color: #4a4a47; font-size: 12px; font-style: italic; }
+.heavy            { color: black;   font-size: 110%; font-weight: bold;   }
+.meta             { color: #aaa; }
+img               { border: 0px none #fff }
+.nopadding        { padding: 0px !important }
+
+.clear {
+   clear:        both;
+   height:       0;
+   overflow:     hidden;
+}
+
+/*
+  Flash messages
+*/
+
+#flash {
+   max-width:    950px;
+   margin:       1em auto 1em auto;
+   clear:        both;
+   overflow:     hidden;
+   display:      block;
+}
+.error, .notice, .success {
+   width:        922px;
+   margin:       0;
+   padding:      12px;
+   border:       2px solid #ddd;
+   font-size:    14px;
+   float:        left;
+}
+.error     { background: #fbe3e4; color: #a34;    border-color: #fbc2c4; }
+.error   a { color: #54c; }
+.notice    { background: #fff6bf; color: #817134; border-color: #ffd324; }
+.notice  a { color: #77b; }
+.success   { background: #d6ffcd; color: #529214; border-color: #65b27c; }
+.success a { color: #3a59a5; }
