@@ -1,16 +1,33 @@
-ROOT_DIR = '/var/www/cartilage/shared'
-FileUtils.mkdir_p  ROOT_DIR+'/tmp'
-FileUtils.mkdir_p  ROOT_DIR+'/log'
+app_dir = '/var/www/cartilage'
+FileUtils.mkdir_p  app_dir+'/shared/tmp'
+FileUtils.mkdir_p  app_dir+'/shared/log'
 
-# 16 workers and 1 master
-worker_processes  5
-preload_app       true
+
+case ENV['RACK_ENV']
+when 'development'
+  worker_processes  2
+  preload_app       false
+  puts ENV['RACK_ENV']
+else
+  worker_processes  5
+  preload_app       true
+  stderr_path       app_dir+'/shared/log/unicorn.stderr.log'
+  stdout_path       app_dir+'/shared/log/unicorn.stdout.log'
+end
+
 timeout           80
 # listen          8080, :tcp_nopush => true
-listen            ROOT_DIR+'/tmp/unicorn.sock', :backlog => 2048
-pid               ROOT_DIR+'/tmp/unicorn.pid'
-stderr_path       ROOT_DIR+'/log/unicorn.stderr.log'
-stderr_path       ROOT_DIR+'/log/unicorn.stdout.log'
+working_directory app_dir+'/current'
+listen            app_dir+'/shared/tmp/unicorn.sock', :backlog => 64
+pid               app_dir+'/shared/tmp/unicorn.pid'
+
+after_fork do |server, worker|
+  # per-process listener ports for debugging/admin/migrations
+  addr = "127.0.0.1:#{9000 + worker.nr}"
+  # keep trying to connect to port, wait 5s in between (an older daemon might
+  # still be quitting and won the port).
+  server.listen(addr, :tries => -1, :delay => 5, :backlog => 64)  # , :tcp_nopush => true
+end
 
 # # REE
 GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
