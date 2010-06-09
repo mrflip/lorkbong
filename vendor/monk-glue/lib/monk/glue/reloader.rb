@@ -28,7 +28,7 @@ class Monk::Glue::Reloader
 
     @app_class.reset!
 
-    require @app_class.app_file
+    require File.expand_path(@app_class.app_file)
   end
 
   # Returns the timestamp for the most recently modified app file.
@@ -40,6 +40,6 @@ class Monk::Glue::Reloader
 
   # Returns the list of application files.
   def files
-    Dir[Main.root_path("app", "**", "*.rb")] + [@app_class.app_file]
+    Dir[root_path("app", "**", "*.rb")] + [@app_class.app_file]
   end
 end

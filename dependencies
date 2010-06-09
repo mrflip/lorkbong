@@ -5,6 +5,6 @@ rack-flash 0.1.1 git://github.com/nakajima/rack-flash.git
 sinatra 1.0 git://github.com/sinatra/sinatra.git
 haml 3.0.6 git://github.com/nex3/haml.git
 extlib 0.9.15 git://github.com/datamapper/extlib.git
-monk-glue 0.0.1 git://github.com/monkrb/glue.git
+monk-glue git://github.com/monkrb/glue.git
 json 1.4.3 git://github.com/genki/json.git
 unicorn 0.99.0 git://git.bogomips.org/unicorn.git
