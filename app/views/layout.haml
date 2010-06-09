@@ -1,10 +1,23 @@
+!!! XML
 !!! Strict
-%html
+%html{ "xml:lang" => "en", :lang => "en", "xmlns" => "http://www.w3.org/1999/xhtml" }
   %head
-    %title
-    %meta{:"http-equiv" => "Content-Type", :content => "text/html; charset=utf-8"}/
-    %link{:rel => "stylesheet", :href => "/css/reset.css", :type => "text/css"}/
-    %link{:rel => "stylesheet", :href => "/css/main.css", :type => "text/css"}/
+    %title= ['App', @title].join('::')
+    %link{ :href => "/stylesheets/reset.css",       :rel => "stylesheet",    :type => "text/css" }
+    %link{ :href => "/stylesheets/application.css", :rel => "stylesheet",    :type => "text/css" }
+    %link{ :href => "/favicon.ico",                 :rel => "shortcut icon", :type => "image/x-icon" }
 
   %body
-    != yield
+    #container
+      != partial :_topbar unless @skip_topbar
+      != partial :_flash
+      %br.clear
+      
+      != yield
+
+      %br.clear
+      = @dump
+
+    -# %script{ :type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"    }
+    -# %script{ :type => "text/javascript", :src => "/javascripts/application.js" }
+    != @final_js  
