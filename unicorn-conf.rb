@@ -2,7 +2,6 @@ app_dir = '/var/www/cartilage'
 FileUtils.mkdir_p  app_dir+'/shared/tmp'
 FileUtils.mkdir_p  app_dir+'/shared/log'
 
-
 case ENV['RACK_ENV']
 when 'development'
   worker_processes  2
@@ -15,8 +14,10 @@ else
   stdout_path       app_dir+'/shared/log/unicorn.stdout.log'
 end
 
+# # REE
+GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
+
 timeout           80
-# listen          8080, :tcp_nopush => true
 working_directory app_dir+'/current'
 listen            app_dir+'/shared/tmp/unicorn.sock', :backlog => 64
 pid               app_dir+'/shared/tmp/unicorn.pid'
@@ -28,6 +29,3 @@ after_fork do |server, worker|
   # still be quitting and won the port).
   server.listen(addr, :tries => -1, :delay => 5, :backlog => 64)  # , :tcp_nopush => true
 end
-
-# # REE
-GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)

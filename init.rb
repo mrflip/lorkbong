@@ -14,7 +14,7 @@ require 'extlib'
 require 'rack/flash'
 
 # Load initializers
-Dir[root_path("config/initializers/*.rb")].each{|file| require file.gsub(/\.rb$/, '\1') }
+Dir[Monk::Glue.root_path("config/initializers/*.rb")].each{|file| require file.gsub(/\.rb$/, '\1') }
 # require 'dm-core'
 # require 'dm-validations'
 # require 'dm-timestamps'
@@ -40,7 +40,7 @@ class Main < Monk::Glue
 end
 
 # Load all application files.
-Dir[root_path("app/**/*.rb")].each do |file|
+Dir[Monk::Glue.root_path("app/**/*.rb")].each do |file|
   require file
 end
 
