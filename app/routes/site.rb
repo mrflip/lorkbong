@@ -18,7 +18,7 @@ class Main
 
   get '/emr/run' do
     key_pair_file = ::ROOT_DIR+'/tmp/emr_keypair.pem'
-    File.open(key_pair_file,'w'){|f| f < ENV['EMR_KEYPAIR'] }
+    File.open(key_pair_file,'w'){|f| f << ENV['EMR_KEYPAIR'] }
     [ '<pre>',
       `ls -l tmp/`,
       %x{
