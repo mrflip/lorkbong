@@ -10,8 +10,10 @@ class Main
   end
 
   get '/emr/list' do
-    [ %Q{ #{::ROOT_DIR}/vendor/elastic-mapreduce -a $AWS_ACCESS_KEY_ID  -p $AWS_SECRET_ACCESS_KEY --list },
-      ENV['AWS_ACCESS_KEY_ID']
+    [ '<pre>',
+      %x{ #{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce -a $AWS_ACCESS_KEY_ID  -p $AWS_SECRET_ACCESS_KEY --list },
+      ENV['AWS_ACCESS_KEY_ID'],
+      '</pre>',
     ]
   end
 end
