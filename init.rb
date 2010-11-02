@@ -1,7 +1,7 @@
 ::ROOT_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? ::ROOT_DIR
 
 begin
-  require File.dirname(__FILE__) + "/vendor/dependencies/lib/dependencies"
+  require ::ROOT_DIR + "/vendor/dependencies/lib/dependencies"
 rescue LoadError
   require "dependencies"
 end
