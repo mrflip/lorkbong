@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
-
+::ROOT_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? ::ROOT_DIR
+Dir[::ROOT_DIR+'/vendor/**/lib'].each{|dir| $: << dir }
+EMR_CONFIG_DIR = ::ROOT_DIR + '/config'
+p $:
+#
 require 'rubygems'
 require 'wukong'
-::ROOT_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? ::ROOT_DIR
-EMR_CONFIG_DIR = ::ROOT_DIR + '/config'
 require 'wukong/script/emr_command'
 
 class AdjacencyListToDegree < Wukong::Streamer::RecordStreamer

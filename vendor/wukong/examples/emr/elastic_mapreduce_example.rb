@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 Dir[File.dirname(__FILE__)+'/vendor/**/lib'].each{|dir| $: << dir }
-p $:
 require 'rubygems'
 require 'wukong'
 
