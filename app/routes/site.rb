@@ -11,7 +11,7 @@ class Main
 
   get '/emr/list' do
     block_of_code(
-      %x{ ruby #{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce -a $AWS_ACCESS_KEY_ID  -p $AWS_SECRET_ACCESS_KEY --list }
+      %x{ ruby #{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce -a "$AWS_ACCESS_KEY_ID" -p "$AWS_SECRET_ACCESS_KEY" --list  2>&1 }
       )
   end
 
@@ -20,7 +20,7 @@ class Main
     output = "s3n://s3n.infinitemonkeys.info/data/examples/wp-link-degree-4"
     block_of_code(
       %x{
-          ruby #{::ROOT_DIR}/tasks/adjlist_degree.rb --run=emr #{emr_opts} #{input} #{output}
+          ruby #{::ROOT_DIR}/tasks/adjlist_degree.rb --run=emr #{emr_opts} #{input} #{output} 2>&1
       }
       )
   end
