@@ -18,7 +18,7 @@ Settings.define :master_instance_type, :description => 'Overrides the instance t
 Settings.define :jobflow,              :description => "ID of an existing EMR job flow. Wukong will create a new job flow"
 #
 EMR_CONFIG_DIR = '~/.wukong' unless defined?(EMR_CONFIG_DIR)
-Settings.read(File.expand_path(WUKONG_CONFIG_DIR+'/emr.yaml'))
+Settings.read(File.expand_path(EMR_CONFIG_DIR+'/emr.yaml'))
 
 module Wukong
   #
