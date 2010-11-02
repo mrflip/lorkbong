@@ -22,7 +22,7 @@ class Main
     [ '<pre>',
       `ls -l tmp/`,
       %x{
-          ruby #{::ROOT_DIR}/tasks/adjlist_degree.rb --key_pair_file=#{key_pair_file} --run=emr --jobflow=j-18OUFBXJ0Z01W s3n://s3n.infinitemonkeys.info/data/examples/links-simple-sorted-10k.txt s3n://s3n.infinitemonkeys.info/data/examples/wp-link-degree-3
+          ruby #{::ROOT_DIR}/tasks/adjlist_degree.rb --key_pair_file=#{key_pair_file} --run=emr --emr_runner=#{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce --jobflow=j-18OUFBXJ0Z01W s3n://s3n.infinitemonkeys.info/data/examples/links-simple-sorted-10k.txt s3n://s3n.infinitemonkeys.info/data/examples/wp-link-degree-3
       },
       '</pre>',
     ].join("\n")
