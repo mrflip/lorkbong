@@ -1,4 +1,43 @@
 %h1 Hello, world!
 
-How <b>you</b> doin'?
+%h1 Lorkbong: Very stupid example for Wukong / Elastic Map Reduce integration
 
+Lorkdong (named after the staff carried by Sun Wukong) is a very very simple example Heroku app that lets you trigger showing job status or launching a new job, either by visiting a special URL or by triggering a rake task.
+
+%h2 Setup
+
+%ol
+  
+  %li
+    Create the app:
+
+    %pre heroku create lorkbong-example
+
+  %li Edit the obvious files in @config/@. You can make life much more dangerous but slightly simpler by adding your keys to the config. If you do this, ake sure you DON'T check this app into a public repo or we'll switch all our infrastructure to run off your account.
+
+  %li
+    You should probably be more responsible and use environment variables for your credentials. Use the heroku commandline tool to run the following command:
+    
+    %pre heroku config:add AWS_ACCESS_KEY_ID=<your-aws-access-key>
+    %pre heroku config:add AWS_SECRET_ACCESS_KEY=<your-aws-secret-key>
+    %pre heroku config:add EMR_KEYPAIR=`cat /path/to/your/keypair.pem`
+
+  %li Now visit http://lorkbong-example.heroku.com (or whatever you called it). Follow the link for 'list jobs'. You should see a listing of any jobs in your queue.
+
+%h2 Debugging
+
+Right now the job info is hardcoded into the file @app/helpers/emr_script.rb@ (sorry).  Open that file and edit the block so that it runs (for the first time) with 'alive' set to true. 
+
+%ul
+  
+  %li Make note of the jobflow ID (or check the list jobs path at /emr/list ) and hack that into the file above for debugging.
+
+  %li Check the "AWS console":http://bit.ly/awsconsole for a closer look at the job progress. You can also find the public IP of the master node from the console, and log in to the machine directly:
+
+%pre
+  ssh -i /path/to/your/keypair.pem hadoop@ec2-148-37-14-128.compute-1.amazonaws.com
+
+
+%h2 Credits
+
+The frontend app is based on Monk / Cartilage, a skeleton for building Sinatra apps.
