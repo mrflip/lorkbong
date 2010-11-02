@@ -10,21 +10,47 @@ class Main
   end
 
   get '/emr/list' do
-    [ '<pre>',
-      %x{ ruby #{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce -a $AWS_ACCESS_KEY_ID  -p $AWS_SECRET_ACCESS_KEY --list },
-      '</pre>',
-    ].join("\n")
+    block_of_code(
+      %x{ ruby #{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce -a $AWS_ACCESS_KEY_ID  -p $AWS_SECRET_ACCESS_KEY --list }
+      )
   end
 
   get '/emr/run' do
-    key_pair_file = ::ROOT_DIR+'/tmp/emr_keypair.pem'
-    File.open(key_pair_file,'w'){|f| f << ENV['EMR_KEYPAIR'] }
-    [ '<pre>',
-      `ls -l tmp/`,
+    input  = "s3n://s3n.infinitemonkeys.info/data/examples/links-simple-sorted-10k.txt"
+    output = "s3n://s3n.infinitemonkeys.info/data/examples/wp-link-degree-4"
+    block_of_code(
       %x{
-          ruby #{::ROOT_DIR}/tasks/adjlist_degree.rb --key_pair_file=#{key_pair_file} --run=emr --emr_runner=#{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce --jobflow=j-18OUFBXJ0Z01W s3n://s3n.infinitemonkeys.info/data/examples/links-simple-sorted-10k.txt s3n://s3n.infinitemonkeys.info/data/examples/wp-link-degree-3
-      },
+          ruby #{::ROOT_DIR}/tasks/adjlist_degree.rb --run=emr #{emr_opts} #{input} #{output}
+      }
+      )
+  end
+
+  private
+
+  def block_of_code *args
+    [ '<pre>',
+      args,
       '</pre>',
-    ].join("\n")
+    ].flatten.join("\n")
+  end
+
+  # Temp storage for the keypair file (elastic-mapreduce script demands it be a
+  # static file).
+  def emr_keypair_file
+    ::ROOT_DIR+'/tmp/emr_keypair.pem'
+  end
+
+  # Ditch the emr keypair into a file in the tmp dir. Since the contents never
+  # change this is safe to do even in the virtual environment.
+  def munge_emr_keypair_file
+    File.open(emr_keypair_file,'w'){|f| f << ENV['EMR_KEYPAIR'] }
+  end
+
+  def emr_opts
+    {
+      :emr_runner    => "#{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce",
+      :jobflow       => "j-18OUFBXJ0Z01W",
+      :key_pair_file => emr_keypair_file,
+    }.map{|opt,val| "--#{opt}=#{val}" }.join(" ")
   end
 end
