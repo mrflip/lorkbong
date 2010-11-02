@@ -8,4 +8,10 @@ class Main
     require 'gist'
     Gist.write(["Hello from #{request.path_info} on", `hostname`.chomp, 'at', Time.now].join("\t"))
   end
+
+  get '/emr/list' do
+    [ %Q{ #{::ROOT_DIR}/vendor/elastic-mapreduce -a $AWS_ACCESS_KEY_ID  -p $AWS_SECRET_ACCESS_KEY --list },
+      ENV['AWS_ACCESS_KEY_ID']
+    ]
+  end
 end
