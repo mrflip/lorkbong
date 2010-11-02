@@ -2,7 +2,8 @@ class EmrScript
   EMR_OPTS = {
     :emr_runner    => "#{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce",
     :jobflow       => "j-18OUFBXJ0Z01W",
-    :key_pair_file => emr_keypair_file,
+    # Temp storage for the keypair file (elastic-mapreduce script demands it be a static file).
+    :keypair_file  => ::ROOT_DIR+'/tmp/emr_keypair.pem',
   }
   EMR_INPUT  = "s3n://s3n.infinitemonkeys.info/data/examples/links-simple-sorted-10k.txt"
   EMR_OUTPUT = "s3n://s3n.infinitemonkeys.info/data/examples/wp-link-degree-4"
@@ -16,16 +17,10 @@ class EmrScript
   end
 
 private
-  # Temp storage for the keypair file (elastic-mapreduce script demands it be a
-  # static file).
-  def self.emr_keypair_file
-    ::ROOT_DIR+'/tmp/emr_keypair.pem'
-  end
-
   # Ditch the emr keypair into a file in the tmp dir. Since the contents never
   # change this is safe to do even in the virtual environment.
   def self.munge_emr_keypair_file
-    File.open(self.emr_keypair_file,'w'){|f| f << ENV['EMR_KEYPAIR'] }
+    File.open(EMR_OPTS[:keypair_file], 'w'){|f| f << ENV['EMR_KEYPAIR'] }
   end
 
   def self.emr_opts
