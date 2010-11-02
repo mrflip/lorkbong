@@ -11,8 +11,6 @@ class Main
 
   get '/emr/list' do
     [ '<pre>',
-      Dir[::ROOT_DIR+'/vendor/*'],
-      `ls -l #{::ROOT_DIR}/vendor/*/*`,
       %Q{ #{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce -a $AWS_ACCESS_KEY_ID  -p $AWS_SECRET_ACCESS_KEY --list },
       %x{ ruby #{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce -a $AWS_ACCESS_KEY_ID  -p $AWS_SECRET_ACCESS_KEY --list },
       ENV['AWS_ACCESS_KEY_ID'],
