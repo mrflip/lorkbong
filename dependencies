@@ -8,3 +8,4 @@ extlib git://github.com/datamapper/extlib.git
 monk-glue git://github.com/monkrb/glue.git
 json git://github.com/genki/json.git
 unicorn git://git.bogomips.org/unicorn.git
+tilt git://github.com/rtomayko/tilt.git
