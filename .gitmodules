@@ -1,3 +1,0 @@
-[submodule "vendor/elastic-mapreduce"]
-	path = vendor/elastic-mapreduce
-	url = git@github.com:infochimps/elastic-mapreduce.git
