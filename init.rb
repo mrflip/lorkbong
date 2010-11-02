@@ -22,7 +22,7 @@ Dir[Monk::Glue.root_path("config/initializers/*.rb")].each{|file| require file.g
 class Main < Monk::Glue
   set :app_file, __FILE__
   configure :production do
-    set :static,           false
+    set :static,           true
   end
   configure :development, :test do
     set :static,           true
