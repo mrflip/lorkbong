@@ -2,7 +2,7 @@
 !!! Strict
 %html{ "xml:lang" => "en", :lang => "en", "xmlns" => "http://www.w3.org/1999/xhtml" }
   %head
-    %title= ['App', @title].join('::')
+    %title= ['App', @title || request.path_info.gsub(%r{/},'-') ].join(' :: ')
     %link{ :href => "/stylesheets/reset.css",       :rel => "stylesheet",    :type => "text/css" }
     %link{ :href => "/stylesheets/application.css", :rel => "stylesheet",    :type => "text/css" }
     %link{ :href => "/favicon.ico",                 :rel => "shortcut icon", :type => "image/x-icon" }
@@ -16,7 +16,9 @@
       != yield
 
       %br.clear
-      = @dump
+      - if @dump
+        %pre{ :style => 'margin-top:2em' }
+          = @dump
 
     -# %script{ :type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"    }
     -# %script{ :type => "text/javascript", :src => "/javascripts/application.js" }

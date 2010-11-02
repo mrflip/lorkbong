@@ -36,7 +36,7 @@ class Main < Monk::Glue
   #   :expire_after => 2592000,
   #   :secret       => settings(:session_secret)
   # set :sessions, true
-  # use Rack::Flash, :accessorize => [:success, :notice, :error]
+  use Rack::Flash, :accessorize => [:success, :notice, :error]
 end
 
 # Load all application files.
