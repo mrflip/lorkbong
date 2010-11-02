@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
-::ROOT_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? ::ROOT_DIR
-Dir[::ROOT_DIR+'/vendor/**/lib'].each{|dir| $: << dir }
+::ROOT_DIR = File.expand_path(File.dirname(__FILE__)+'/..') unless defined? ::ROOT_DIR
+Dir[::ROOT_DIR+'/vendor/**/lib'].each{|dir| p dir ; $: << dir }
 EMR_CONFIG_DIR = ::ROOT_DIR + '/config'
 p $:
 #
