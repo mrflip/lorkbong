@@ -13,7 +13,7 @@ class EmrScript
   end
 
   def self.run_step_command
-    %Q{ ruby #{::ROOT_DIR}/tasks/adjlist_degree.rb --run=emr #{emr_opts} #{EMR_INPUT} #{EMR_OUTPUT} 2>&1  }
+    %Q{ ruby #{::ROOT_DIR}/tasks/adjlist_degree.rb --dry_run --run=emr #{emr_opts} #{EMR_INPUT} #{EMR_OUTPUT} 2>&1  }
   end
 
 private
