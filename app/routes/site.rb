@@ -6,6 +6,6 @@ class Main
 
   get '/gist' do
     require 'gist'
-    Gist.write(["Hello at", `hostname`, Time.now].join("\t"))
+    Gist.write(["Hello from #{request.path_info} on", `hostname`.chomp, 'at', Time.now].join("\t"))
   end
 end
