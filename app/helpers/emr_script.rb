@@ -1,11 +1,22 @@
 class EmrScript
+  #
+  # You need to edit the following things:
+  #
   EMR_OPTS = {
+    # # Path to the runner.
     :emr_runner    => "#{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce",
-    :jobflow       => "j-18OUFBXJ0Z01W",
-    # Temp storage for the keypair file (elastic-mapreduce script demands it be a static file).
+    # # Temp storage for the keypair file (elastic-mapreduce script demands it be a static file).
     :keypair_file  => ::ROOT_DIR+'/tmp/emr_keypair.pem',
+    # # If you're debugging:
+    # # first run with alive set to true, and launch the job.
+    :alive => nil,
+    # # After the job has been created and run for the first time, fill your
+    # # jobflow into the following and set alive back to nil.
+    # :jobflow       => "j-18OUFBXJ0Z01W",
   }
+  # Path to the input files. Note the 's3n' prefix.
   EMR_INPUT  = "s3n://s3n.infinitemonkeys.info/data/examples/links-simple-sorted-10k.txt"
+  # Path to the output files. This directory must not exist. Note the 's3n' prefix.
   EMR_OUTPUT = "s3n://s3n.infinitemonkeys.info/data/examples/wp-link-degree-4"
 
   def self.list_steps_command

@@ -38,6 +38,6 @@ class Main
     [ '<pre>',
       args,
       '</pre>',
-    ].flatten.join("\n").gsub(/--(access-id|private-key).*$/, "XXXXX" )
+    ].flatten.join("\n").gsub(/(access-id|private-key[ =])(\S+)/, '\1XXXXX' )
   end
 end

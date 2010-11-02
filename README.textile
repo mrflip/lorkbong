@@ -1,44 +1,57 @@
-h1. Cartilage - Generic Sinatra / Monk Web App
+h1. Lorkbong: Very stupid example for Wukong / Elastic Map Reduce integration
 
-This is a generic Monk app
+Lorkdong (named after the staff carried by Sun Wukong) is a very very simple example Heroku app that lets you trigger showing job status or launching a new job, either by visiting a special URL or by triggering a rake task.
+
+h2. Setup
+
+# Create the app:
+
+  heroku create lorkbong-example
+
+# Edit the obvious files in @config/@. You can make life much more dangerous but slightly simpler by adding your keys to the config. If you do this, ake sure you DON'T check this app into a public repo or we'll switch all our infrastructure to run off your account.
+
+# You should probably be more responsible and use environment variables for your credentials. Use the heroku commandline tool to run the following command:
+
+  heroku config:add AWS_ACCESS_KEY_ID=<your-aws-access-key>
+  heroku config:add AWS_SECRET_ACCESS_KEY=<your-aws-secret-key>
+  heroku config:add EMR_KEYPAIR=`cat /path/to/your/keypair.pem`
+
+# Now visit http://lorkbong-example.heroku.com (or whatever you called it). Follow the link for 'list jobs'. You should see a listing of any jobs in your queue.
+
+h2. Debugging
+
+# Right now the job info is hardcoded into the file @app/helpers/emr_script.rb@ (sorry).  Open that file and edit the block so that it runs (for the first time) with 'alive' set to true. 
+
+<pre>
+  #
+  # You need to edit the following things:
+  #
+  EMR_OPTS = {
+    # # Path to the runner.
+    :emr_runner    => "#{::ROOT_DIR}/vendor/elastic-mapreduce/elastic-mapreduce",
+    # # Temp storage for the keypair file (elastic-mapreduce script demands it be a static file).
+    :keypair_file  => ::ROOT_DIR+'/tmp/emr_keypair.pem',
+    # # If you're debugging:
+    # # first run with alive set to true, and launch the job.
+    :alive => true,
+    # # After the job has been created and run for the first time, fill your
+    # # jobflow into the following and set alive back to nil.
+    # :jobflow       => "j-18OUFBXJ0Z01W",
+  }
+  # Path to the input files. Note the 's3n' prefix.
+  EMR_INPUT  = "s3n://emr.yourdomain.com/wukong/data/examples/links-simple-sorted-10k.txt"
+  # Path to the output files. This directory must not exist. Note the 's3n' prefix.
+  EMR_OUTPUT = "s3n://emr.yourdomain.com/wukong/data/examples/wp-link-degree-4"
+</pre>
+
+# Make note of the jobflow ID (or check the list jobs path at /emr/list ) and hack that into the file above for debugging.
+
+# Check the "AWS console":http://bit.ly/awsconsole for a closer look at the job progress. You can also find the public IP of the master node from the console, and log in to the machine directly:
+
+<pre>
+  ssh -i /path/to/your/keypair.pem hadoop@ec2-148-37-14-128.compute-1.amazonaws.com
+</pre>
 
 h2. Credits
 
 * The frontend app is based on Monk / Cartilage, a skeleton for building Sinatra apps.
-
-h2. Setup
-
-Ruby Enterprise Edition
-
-<pre>
-    sudo apt-get install libssl-dev libreadline5-dev;
-    latest_ree=ruby-enterprise-1.8.7-2009.10.tar.gz;
-    wget "http://rubyforge.org/frs/download.php/66162/${latest_ree}.tar.gz" ;
-    tar xvzf ${latest_ree}.tar.gz;
-    cd ${latest_ree_gz};
-    sudo ./installer --auto /usr/local/ree;
-</pre>    
-
-Nginx
-
-<pre>
-    latest_nginx=nginx-0.7.64;
-    wget "http://sysoev.ru/nginx/${latest_nginx}.tar.gz" ;
-    tar xvzf ${latest_nginx}.tar.gz ;
-    sudo /usr/local/ree/bin/passenger-install-nginx-module --prefix=/usr/local/nginx --nginx-source-dir=/usr/local/src/$latest_nginx --extra-configure-flags=' --with-http_ssl_module --with-http_gzip_static_module --add-module=/usr/local/src/ngx-fancyindex-0.2 --add-module=/usr/local/src/nginx_upload_module-2.0.10 --add-module=/usr/local/src/nginx_uploadprogress_module --with-pcre --with-ld-opt=-lssl --with-sha1-asm --with-md5=/usr/include --with-md5-asm --http-proxy-temp-path="/tmp/nginx-proxy_temp" --http-fastcgi-temp-path="/tmp/nginx-fastcgi_temp" --http-client-body-temp-path="/tmp/nginx-client_body_temp" --pid-path="/var/run/nginx/nginx.pid" --conf-path="/slice/etc/nginx/nginx.conf" --lock-path="/var/run/nginx/nginx.lock" --http-log-path="/var/log/nginx/access.log" --error-log-path="/var/log/nginx/error.log" '
-</pre>
-
-Add the deploy user
-
-<pre>
-    sudo adduser deploy
-    sudo usermod -a  -G admin,sudo deploy
-</pre>
-
-Deploy
-
-<pre>
-    cap deploy:setup
-    scp -p config/settings.yml remotehost.com:/var/www/cartilage/shared/system/settings.yml
-    cap deploy:cold
-</pre>
