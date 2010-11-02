@@ -1,8 +1,7 @@
 ::ROOT_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? ::ROOT_DIR
-URL_BASE = ''
 
 begin
-  require "vendor/dependencies/lib/dependencies"
+  require File.dirname(__FILE__) + "/vendor/dependencies/lib/dependencies"
 rescue LoadError
   require "dependencies"
 end
@@ -18,6 +17,7 @@ Dir[Monk::Glue.root_path("config/initializers/*.rb")].each{|file| require file.g
 # require 'dm-core'
 # require 'dm-validations'
 # require 'dm-timestamps'
+
 
 class Main < Monk::Glue
   set :app_file, __FILE__
@@ -35,8 +35,8 @@ class Main < Monk::Glue
   #   :path         => '/',
   #   :expire_after => 2592000,
   #   :secret       => settings(:session_secret)
-  set :sessions, true
-  use Rack::Flash, :accessorize => [:success, :notice, :error]
+  # set :sessions, true
+  # use Rack::Flash, :accessorize => [:success, :notice, :error]
 end
 
 # Load all application files.
@@ -44,8 +44,9 @@ Dir[Monk::Glue.root_path("app/**/*.rb")].each do |file|
   require file
 end
 
-# Shim in any rack Middleware
+# Shim in any rack middleware
 Main.class_eval do
+  # use Rack::WhateverModuleInAppRack
 end
 
 # # Connect to database.
@@ -53,3 +54,4 @@ end
 # DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/#{sqlite3_path}")
 
 Main.run! if Main.run?
+
