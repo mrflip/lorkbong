@@ -25,7 +25,7 @@ private
   # Ditch the emr keypair into a file in the tmp dir. Since the contents never
   # change this is safe to do even in the virtual environment.
   def self.munge_emr_keypair_file
-    File.open(emr_keypair_file,'w'){|f| f << ENV['EMR_KEYPAIR'] }
+    File.open(self.emr_keypair_file,'w'){|f| f << ENV['EMR_KEYPAIR'] }
   end
 
   def self.emr_opts
